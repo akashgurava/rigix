@@ -9,7 +9,7 @@ use syn::{
     parse_macro_input, Data, DeriveInput, Error, Field, Fields, Ident, Result, Type, Visibility,
 };
 
-/// Validates that all fields in an entity struct have private (Inherited) visibility.
+/// Validates that all fields in an entity struct have private visibility.
 ///
 /// Accumulates compiler errors across all non-private fields so all offending fields
 /// are reported simultaneously with precise spans pointing directly to the visibility token.
@@ -45,12 +45,13 @@ fn validate_private_fields(fields: &Punctuated<Field, Comma>) -> Result<()> {
     }
 }
 
-/// Generates public getters and an `into_parts` deconstructor for an entity struct.
+/// Generates public getters and an `into_parts(self)` tuple deconstructor for all fields on an entity struct.
 ///
-/// - `String` fields return `&str`.
-/// - Copy primitives (`i8`..`i128`, `u8`..`u128`, `isize`, `usize`, `bool`, `f32`, `f64`, `char`) and `Uuid` return by value.
+/// Type mapping rules:
+/// - `String` fields return string slices (`&str`).
+/// - Primitive Copy types (`i8`..`i128`, `u8`..`u128`, `bool`, `f32`, `f64`, `usize`, `isize`, `char`) and `Uuid` return by value.
 /// - All other types return an immutable reference `&T`.
-/// - `into_parts(self)` decomposes the struct into a tuple containing all fields in declaration order.
+/// - `into_parts(self)` consumes the entity and returns all fields in declaration order as a tuple.
 fn generate_getters(struct_name: &Ident, fields: &Punctuated<Field, Comma>) -> TokenStream2 {
     let getters = fields.iter().filter_map(|field| {
         let field_ident = field.ident.as_ref()?;
