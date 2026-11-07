@@ -67,6 +67,14 @@ case "${1:-build}" in
         echo "==> Checking wasm targets (default macros)..."
         cargo check --package rigix --target "${WASM_TARGET}"
         ;;
+    expand)
+        shift || true
+        if ! command -v cargo-expand >/dev/null 2>&1; then
+            echo "cargo-expand is not installed. Installing..."
+            cargo install cargo-expand
+        fi
+        cargo expand "$@"
+        ;;
     clean)
         cargo clean
         ;;
@@ -84,7 +92,7 @@ case "${1:-build}" in
         cargo check --package rigix --target "${WASM_TARGET}"
         ;;
     *)
-        echo "Usage: ./dev.sh [build|test|lint [--check]|fmt [--check]|clean|check]"
+        echo "Usage: ./dev.sh [build|test|lint [--check]|fmt [--check]|expand|clean|check]"
         exit 1
         ;;
 esac

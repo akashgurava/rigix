@@ -1,0 +1,5 @@
+error: Rigix entity violation: field `id` must be private. Remove `pub` visibility.
+ --> tests/ui/fail_pub_field.rs:5:5
+  |
+5 |     pub id: i64,
+  |     ^^^
