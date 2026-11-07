@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Rigix pre-commit hook
+# Runs format and lint checks before allowing commit
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+cd "$ROOT_DIR"
+
+echo "Running pre-commit checks..."
+./dev.sh fmt --check
+./dev.sh lint --check
+echo "Pre-commit checks passed."
