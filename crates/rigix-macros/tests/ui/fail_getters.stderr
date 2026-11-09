@@ -1,0 +1,51 @@
+error[E0616]: field `id` of struct `UserRequest` is private
+  --> tests/ui/fail_getters.rs:41:17
+   |
+41 |     let _ = req.id;
+   |                 ^^ private field
+   |
+help: a method `id` also exists, call it with parentheses
+   |
+41 |     let _ = req.id();
+   |                   ++
+
+error[E0616]: field `id` of struct `UserModel` is private
+  --> tests/ui/fail_getters.rs:42:19
+   |
+42 |     let _ = model.id;
+   |                   ^^ private field
+   |
+help: a method `id` also exists, call it with parentheses
+   |
+42 |     let _ = model.id();
+   |                     ++
+
+error[E0616]: field `name` of struct `UserRequest` is private
+  --> tests/ui/fail_getters.rs:45:9
+   |
+45 |     req.name = "Charlie".to_string();
+   |         ^^^^ private field
+
+error[E0616]: field `name` of struct `UserModel` is private
+  --> tests/ui/fail_getters.rs:46:11
+   |
+46 |     model.name = "Dave".to_string();
+   |           ^^^^ private field
+
+error[E0599]: no method named `non_existent` found for struct `UserRequest` in the current scope
+  --> tests/ui/fail_getters.rs:49:9
+   |
+ 6 |     pub struct UserRequest {
+   |     ---------------------- method `non_existent` not found for this struct
+...
+49 |     req.non_existent();
+   |         ^^^^^^^^^^^^ method not found in `UserRequest`
+
+error[E0599]: no method named `non_existent` found for struct `UserModel` in the current scope
+  --> tests/ui/fail_getters.rs:50:11
+   |
+19 |     pub struct UserModel {
+   |     -------------------- method `non_existent` not found for this struct
+...
+50 |     model.non_existent();
+   |           ^^^^^^^^^^^^ method not found in `UserModel`

@@ -36,14 +36,14 @@ case "${1:-build}" in
             --check)
                 echo "==> Linting native (all features)..."
                 cargo clippy --workspace --all-targets --all-features -- -D warnings
-                echo "==> Linting wasm (default macros)..."
+                echo "==> Linting wasm (default derive)..."
                 cargo clippy --package rigix --target "${WASM_TARGET}" -- -D warnings
                 ;;
             "")
                 echo "==> Fixing and linting native (all features)..."
                 cargo clippy --workspace --all-targets --all-features --fix --allow-dirty --allow-staged
                 cargo clippy --workspace --all-targets --all-features -- -D warnings
-                echo "==> Fixing and linting wasm (default macros)..."
+                echo "==> Fixing and linting wasm (default derive)..."
                 cargo clippy --package rigix --target "${WASM_TARGET}" --fix --allow-dirty --allow-staged
                 cargo clippy --package rigix --target "${WASM_TARGET}" -- -D warnings
                 ;;
@@ -57,14 +57,14 @@ case "${1:-build}" in
         ensure_wasm_target
         echo "==> Building native (all features)..."
         cargo build --workspace --all-features
-        echo "==> Building wasm (default macros)..."
+        echo "==> Building wasm (default derive)..."
         cargo build --package rigix --target "${WASM_TARGET}"
         ;;
     test)
         ensure_wasm_target
         echo "==> Testing native (all features)..."
         cargo test --workspace --all-features
-        echo "==> Checking wasm targets (default macros)..."
+        echo "==> Checking wasm targets (default derive)..."
         cargo check --package rigix --target "${WASM_TARGET}"
         ;;
     expand)
@@ -84,11 +84,11 @@ case "${1:-build}" in
         cargo fmt --all -- --check
         echo "==> Linting native (all features)..."
         cargo clippy --workspace --all-targets --all-features -- -D warnings
-        echo "==> Linting wasm (default macros)..."
+        echo "==> Linting wasm (default derive)..."
         cargo clippy --package rigix --target "${WASM_TARGET}" -- -D warnings
         echo "==> Testing native (all features)..."
         cargo test --workspace --all-features
-        echo "==> Checking wasm (default macros)..."
+        echo "==> Checking wasm (default derive)..."
         cargo check --package rigix --target "${WASM_TARGET}"
         ;;
     *)

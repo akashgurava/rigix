@@ -9,8 +9,8 @@ readme = "README.md"
 description = "Unified facade and core runtime for the Rigix web framework"
 
 [features]
-default = ["macros"]
-macros = ["dep:rigix-macros", "dep:serde", "dep:serde_json"]
+default = ["derive"]
+derive = ["dep:rigix-macros", "dep:serde", "dep:serde_json"]
 server = [
     "dep:axum",
     "dep:tokio",
@@ -36,7 +36,7 @@ db = [
     "dep:serde",
     "dep:serde_json",
 ]
-full = ["macros", "server", "auth", "db"]
+full = ["derive", "server", "auth", "db"]
 
 [dependencies]
 rigix-macros = { path = "../rigix-macros", version = "0.1.0", optional = true }

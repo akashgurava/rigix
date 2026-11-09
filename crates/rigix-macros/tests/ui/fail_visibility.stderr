@@ -1,0 +1,59 @@
+error: Rigix Request violation: field `id` must be private. Remove `pub` visibility.
+ --> tests/ui/fail_visibility.rs:8:9
+  |
+8 |         pub id: i64,
+  |         ^^^
+
+error: Rigix Request violation: field `standard_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:14:9
+   |
+14 |         pub standard_pub: i64,
+   |         ^^^
+
+error: Rigix Request violation: field `crate_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:15:9
+   |
+15 |         pub(crate) crate_pub: String,
+   |         ^^^^^^^^^^
+
+error: Rigix Request violation: field `super_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:16:9
+   |
+16 |         pub(super) super_pub: bool,
+   |         ^^^^^^^^^^
+
+error: Rigix Request violation: field `path_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:17:9
+   |
+17 |         pub(in crate::test_module) path_pub: u32,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error: Rigix Model violation: field `id` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:23:9
+   |
+23 |         pub id: i64,
+   |         ^^^
+
+error: Rigix Model violation: field `standard_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:29:9
+   |
+29 |         pub standard_pub: i64,
+   |         ^^^
+
+error: Rigix Model violation: field `crate_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:30:9
+   |
+30 |         pub(crate) crate_pub: String,
+   |         ^^^^^^^^^^
+
+error: Rigix Model violation: field `super_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:31:9
+   |
+31 |         pub(super) super_pub: bool,
+   |         ^^^^^^^^^^
+
+error: Rigix Model violation: field `path_pub` must be private. Remove `pub` visibility.
+  --> tests/ui/fail_visibility.rs:32:9
+   |
+32 |         pub(in crate::test_module) path_pub: u32,
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^

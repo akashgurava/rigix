@@ -2,15 +2,37 @@
 
 Rigix is an opinionated, compile-time-enforced Rust application framework and metaprogramming DSL.
 
-## Entity Macro (`#[entity]`)
+## Request Derive (`#[derive(Request)]`)
 
-The `#[entity]` macro defines domain entities and derives their associated structures:
+The `#[derive(Request)]` macro defines encapsulated inbound request/command DTOs:
 
 ```rust
-use rigix::entity;
+use rigix::Request;
 use uuid::Uuid;
 
-#[entity]
+#[derive(Request)]
+struct CreateUser {
+    id: i64,
+    uuid: Uuid,
+    name: String,
+}
+
+// Emits:
+// req.id() -> i64
+// req.uuid() -> Uuid
+// req.name() -> &str
+// req.into_parts() -> (i64, Uuid, String)
+```
+
+## Model Derive (`#[derive(Model)]`)
+
+The `#[derive(Model)]` macro defines encapsulated domain models and response representations:
+
+```rust
+use rigix::Model;
+use uuid::Uuid;
+
+#[derive(Model)]
 struct User {
     id: i64,
     uuid: Uuid,

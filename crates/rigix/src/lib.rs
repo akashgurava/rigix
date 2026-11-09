@@ -2,5 +2,5 @@
 //!
 //! Rigix is an opinionated, compile-time-enforced Rust application framework.
 
-#[cfg(feature = "macros")]
-pub use rigix_macros::entity;
+#[cfg(feature = "derive")]
+pub use rigix_macros::{Model, Request};
