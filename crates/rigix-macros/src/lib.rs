@@ -158,14 +158,14 @@ pub fn request(input: TokenStream) -> TokenStream {
     derive_encapsulated_struct("Request", input)
 }
 
-/// Defines a domain model / response DTO with compile-time encapsulated fields.
+/// Defines an outbound response DTO with compile-time encapsulated fields.
 ///
 /// When derived on a struct, this macro performs the following actions:
 /// 1. Checks that all fields on the struct are private (inherited visibility).
 /// 2. Generates public reference getters (`&field` or Copy for primitives) and an `into_parts(self)` method.
-#[proc_macro_derive(Model)]
-pub fn model(input: TokenStream) -> TokenStream {
-    derive_encapsulated_struct("Model", input)
+#[proc_macro_derive(Response)]
+pub fn response(input: TokenStream) -> TokenStream {
+    derive_encapsulated_struct("Response", input)
 }
 
 #[cfg(test)]
@@ -183,7 +183,7 @@ mod tests {
         };
         if let Fields::Named(FieldsNamed { named, .. }) = item.fields {
             assert!(validate_private_fields("Request", &named).is_ok());
-            assert!(validate_private_fields("Model", &named).is_ok());
+            assert!(validate_private_fields("Response", &named).is_ok());
         } else {
             panic!("expected named fields");
         }
@@ -204,10 +204,10 @@ mod tests {
                 "Rigix Request violation: field `id` must be private. Remove `pub` visibility."
             );
 
-            let model_err = validate_private_fields("Model", &named).unwrap_err();
+            let res_err = validate_private_fields("Response", &named).unwrap_err();
             assert_eq!(
-                model_err.to_string(),
-                "Rigix Model violation: field `id` must be private. Remove `pub` visibility."
+                res_err.to_string(),
+                "Rigix Response violation: field `id` must be private. Remove `pub` visibility."
             );
         } else {
             panic!("expected named fields");
@@ -289,10 +289,10 @@ mod tests {
                 Bar,
             }
         };
-        let err = derive_encapsulated_struct_tokens("Model", enum_item).unwrap_err();
+        let err = derive_encapsulated_struct_tokens("Response", enum_item).unwrap_err();
         assert_eq!(
             err.to_string(),
-            "#[derive(Model)] can only be applied to structs"
+            "#[derive(Response)] can only be applied to structs"
         );
     }
 }

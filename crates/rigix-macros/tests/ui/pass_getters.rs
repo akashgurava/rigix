@@ -1,5 +1,5 @@
 mod definitions {
-    use rigix_macros::{Model, Request};
+    use rigix_macros::{Request, Response};
     use uuid::Uuid;
 
     #[derive(Request)]
@@ -32,7 +32,7 @@ mod definitions {
         }
     }
 
-    #[derive(Model, Clone, PartialEq, Debug)]
+    #[derive(Response, Clone, PartialEq, Debug)]
     pub struct Account {
         id: i64,
         uuid: Uuid,
@@ -51,7 +51,7 @@ mod definitions {
         }
     }
 
-    #[derive(Model)]
+    #[derive(Response)]
     pub struct FamilyDetails {
         id: i64,
         family_name: String,
@@ -112,7 +112,7 @@ fn main() {
     assert!((req_bal - 500.25).abs() < f64::EPSILON);
     assert_eq!(req_tags, vec!["emergency".to_string(), "personal".to_string()]);
 
-    // 2. Verify Model getters and into_parts (including nested models)
+    // 2. Verify Response getters and into_parts (including nested responses)
     let acc1 = Account::new(1, dummy_uuid, "Checking".to_string(), 1200.0);
     let acc2 = Account::new(2, dummy_uuid, "Vault".to_string(), 8500.0);
 

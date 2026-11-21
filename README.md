@@ -24,26 +24,26 @@ struct CreateUser {
 // req.into_parts() -> (i64, Uuid, String)
 ```
 
-## Model Derive (`#[derive(Model)]`)
+## Response Derive (`#[derive(Response)]`)
 
-The `#[derive(Model)]` macro defines encapsulated domain models and response representations:
+The `#[derive(Response)]` macro defines encapsulated outbound response DTOs:
 
 ```rust
-use rigix::Model;
+use rigix::Response;
 use uuid::Uuid;
 
-#[derive(Model)]
-struct User {
+#[derive(Response)]
+struct UserResponse {
     id: i64,
     uuid: Uuid,
     name: String,
 }
 
 // Emits:
-// user.id() -> i64
-// user.uuid() -> Uuid
-// user.name() -> &str
-// user.into_parts() -> (i64, Uuid, String)
+// res.id() -> i64
+// res.uuid() -> Uuid
+// res.name() -> &str
+// res.into_parts() -> (i64, Uuid, String)
 ```
 
 ## Development

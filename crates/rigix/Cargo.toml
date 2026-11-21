@@ -21,22 +21,9 @@ server = [
     "dep:utoipa-swagger-ui",
     "dep:serde",
     "dep:serde_json",
-    "dep:tracing",
     "dep:tracing-subscriber",
 ]
-auth = [
-    "dep:argon2",
-    "dep:rand",
-    "dep:serde",
-    "dep:serde_json",
-]
-db = [
-    "dep:sqlx",
-    "dep:tokio",
-    "dep:serde",
-    "dep:serde_json",
-]
-full = ["derive", "server", "auth", "db"]
+full = ["derive", "server"]
 
 [dependencies]
 rigix-macros = { path = "../rigix-macros", version = "0.1.0", optional = true }
@@ -49,13 +36,6 @@ tower-http = { workspace = true, optional = true }
 clap = { workspace = true, optional = true }
 utoipa = { workspace = true, optional = true }
 utoipa-swagger-ui = { workspace = true, optional = true }
-
-# Auth dependencies
-argon2 = { workspace = true, optional = true }
-rand = { workspace = true, optional = true }
-
-# DB dependencies
-sqlx = { workspace = true, optional = true }
 
 # Core dependencies (compatible with wasm32 / no-server)
 serde = { workspace = true, optional = true }

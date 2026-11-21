@@ -1,4 +1,4 @@
-use rigix_macros::{Model, Request};
+use rigix_macros::{Request, Response};
 
 mod test_module {
     use super::*;
@@ -18,14 +18,14 @@ mod test_module {
         private_field: String,
     }
 
-    #[derive(Model)]
-    struct SinglePubModel {
+    #[derive(Response)]
+    struct SinglePubResponse {
         pub id: i64,
         name: String,
     }
 
-    #[derive(Model)]
-    struct MultiPubModel {
+    #[derive(Response)]
+    struct MultiPubResponse {
         pub standard_pub: i64,
         pub(crate) crate_pub: String,
         pub(super) super_pub: bool,

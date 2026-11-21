@@ -1,4 +1,4 @@
-use rigix_macros::{Model, Request};
+use rigix_macros::{Request, Response};
 use uuid::Uuid;
 
 #[derive(Request)]
@@ -9,8 +9,8 @@ struct ValidRequest {
     active: bool,
 }
 
-#[derive(Model)]
-struct ValidModel {
+#[derive(Response)]
+struct ValidResponse {
     id: i64,
     uuid: Uuid,
     name: String,
@@ -27,7 +27,7 @@ fn main() {
         active: true,
     };
 
-    let _ = ValidModel {
+    let _ = ValidResponse {
         id: 1,
         uuid: dummy_uuid,
         name: "User".to_string(),

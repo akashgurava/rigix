@@ -28,31 +28,31 @@ error: Rigix Request violation: field `path_pub` must be private. Remove `pub` v
 17 |         pub(in crate::test_module) path_pub: u32,
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-error: Rigix Model violation: field `id` must be private. Remove `pub` visibility.
+error: Rigix Response violation: field `id` must be private. Remove `pub` visibility.
   --> tests/ui/fail_visibility.rs:23:9
    |
 23 |         pub id: i64,
    |         ^^^
 
-error: Rigix Model violation: field `standard_pub` must be private. Remove `pub` visibility.
+error: Rigix Response violation: field `standard_pub` must be private. Remove `pub` visibility.
   --> tests/ui/fail_visibility.rs:29:9
    |
 29 |         pub standard_pub: i64,
    |         ^^^
 
-error: Rigix Model violation: field `crate_pub` must be private. Remove `pub` visibility.
+error: Rigix Response violation: field `crate_pub` must be private. Remove `pub` visibility.
   --> tests/ui/fail_visibility.rs:30:9
    |
 30 |         pub(crate) crate_pub: String,
    |         ^^^^^^^^^^
 
-error: Rigix Model violation: field `super_pub` must be private. Remove `pub` visibility.
+error: Rigix Response violation: field `super_pub` must be private. Remove `pub` visibility.
   --> tests/ui/fail_visibility.rs:31:9
    |
 31 |         pub(super) super_pub: bool,
    |         ^^^^^^^^^^
 
-error: Rigix Model violation: field `path_pub` must be private. Remove `pub` visibility.
+error: Rigix Response violation: field `path_pub` must be private. Remove `pub` visibility.
   --> tests/ui/fail_visibility.rs:32:9
    |
 32 |         pub(in crate::test_module) path_pub: u32,
