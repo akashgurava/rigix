@@ -1,0 +1,14 @@
+# Prohibited git patterns (one regex per line)
+# Blank lines and lines starting with # are ignored
+
+git[[:space:]]+log
+git[[:space:]]+show
+git[[:space:]]+blame
+git[[:space:]]+reflog
+git[[:space:]]+diff
+git[[:space:]]+rev-list
+git[[:space:]]+whatchanged
+git[[:space:]]+push
+git[[:space:]]+reset[[:space:]]+--hard
+git[[:space:]]+clean[[:space:]]+-f
+git[[:space:]]+branch[[:space:]]+-D

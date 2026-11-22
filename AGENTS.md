@@ -1,19 +1,20 @@
 # Agent Operating Guidelines
 
-## Codebase Scope (Greenfield)
-- This repository is a clean-slate greenfield project.
-- Treat the files present in the current working tree and the active task/specification as the sole primary sources of truth.
-- Do not search for or inspect past commits, revisions, branches, or git logs. Design and implement solely from the fresh project specifications.
+## Codebase Scope
+- **Greenfield**: Base all implementations strictly on the active specification and the current working directory tree.
+- **Search**: In-tree search is conducted using `git grep` or file-read tools.
+- **Source Control**: All git lifecycle operations (branching, commits, pushes) are user-managed. Do not commit unless explicitly instructed.
 
-## Git Command Policy
-- All git operations (commit, push, checkout, branch switching) are reserved for the human developer.
-- Agents must NOT execute any git commands, with the sole exception of `git grep` for in-tree text searches.
-- Under no circumstances should any other git command be executed without explicit instruction from the user in the prompt.
-
-## Git Commit Rules
-- If git commits are explicitly authorized by the user, the commit message summary line MUST be strictly less than 70 characters (`< 70 chars`).
+## Git Commits (When Authorized)
+- Commit message summaries must be strictly less than 70 characters (`< 70 chars`).
 
 ## Engineering Standards
-- Build functionality in small, test-driven slices (`red-green-refactor`).
-- Keep modules deep: rich behavior hidden behind simple, intuitive interfaces.
-- Settle domain vocabulary in `GLOSSARY.md` and architectural decisions in `docs/adr/`.
+- **TDD**: Build behavior in tight, test-driven slices (`red-green-refactor`).
+- **Deep Modules**: Expose simple interfaces that hide rich, robust implementation details.
+- **Domain Language**: Settle domain vocabulary in `GLOSSARY.md` and hard architectural choices in `docs/adr/`.
+
+## Completion Criteria
+Before declaring a task done:
+1. All newly introduced behavior has corresponding automated tests.
+2. The project's type checker and test suite pass with zero errors.
+3. No unstaged temporary files or scratch artifacts remain in the tree.
