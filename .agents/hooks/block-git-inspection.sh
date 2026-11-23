@@ -16,6 +16,12 @@ if [ -z "$COMMAND" ]; then
   COMMAND=$(python3 -c "import sys, json; data=json.load(sys.stdin); print(data.get('toolCall',{}).get('args',{}).get('CommandLine',''))" <<< "$INPUT" 2>/dev/null)
 fi
 
+# Block standalone git add unless chained with git commit
+if echo "$COMMAND" | grep -qE 'git[[:space:]]+add' && ! echo "$COMMAND" | grep -qE 'git[[:space:]]+commit'; then
+  jq -n '{decision: "deny", reason: "BLOCKED: Standalone '\''git add'\'' is prohibited. Keep edits in the working tree. Run '\''git add'\'' only when chaining an atomic commit (e.g. git add <files> && git commit -m \"<summary>\")."}'
+  exit 0
+fi
+
 if [ -n "$PATTERNS_FILE" ] && [ -f "$PATTERNS_FILE" ]; then
   while IFS= read -r pattern || [ -n "$pattern" ]; do
     pattern=$(echo "$pattern" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')

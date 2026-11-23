@@ -15,22 +15,15 @@ Single-context repository layout (`GLOSSARY.md` and `docs/adr/`). See `docs/agen
 - **Greenfield**: Base all implementations strictly on the active specification and the current working directory tree.
 - **Source Control**: All git lifecycle operations (branching, commits, pushes) are user-managed unless following the authorized Staged Implementation Protocol below.
 
-## Git Commits (When Authorized)
-- Commit message summaries must be strictly less than 70 characters (`< 70 chars`).
+## Working Tree & Commits (When Authorized)
+- **Working Tree**: Keep all edits directly in the working tree. Inspect status with `git status -s`.
+- **Atomic Commits**: When explicitly requested to commit, stage and commit target files in a single step:
+  `git add <files> && git commit -m "<summary>"` (< 70 chars).
 
 ## Engineering Standards
 - **TDD**: Build behavior in tight, test-driven slices (`red-green-refactor`).
 - **Deep Modules**: Expose simple interfaces that hide rich, robust implementation details.
 - **Domain Language**: Settle domain vocabulary in `GLOSSARY.md` and hard architectural choices in `docs/adr/`.
-
-## Task Tracking & Kaneo Protocol
-- **Privacy & Dynamic Discovery**: Discover identity and workspace dynamically via MCP (`whoami`, `list_workspaces`, `list_projects`). Confine git commits strictly to repository assets.
-- **Frontier Query**: Find tickets where status is `to-do` and all upstream blocking dependencies are satisfied (`done`).
-- **Mandatory Task Claiming & Assignment**: Whenever picking up ANY task (grilling, research, prototype, task, or implementation), claim it immediately before doing any work:
-  1. Discover current user ID dynamically via `whoami`.
-  2. Assign the ticket to self via `update_task_assignee` (`userId: <id>`).
-  3. Move ticket status to `in-progress` via `update_task_status`.
-  *Claiming open tasks ensures parallel workers never collide on the same ticket.*
 
 ## Grilling Protocol (`wayfinder:grilling`)
 When resolving a decision ticket via grilling:
@@ -44,6 +37,7 @@ When resolving a decision ticket via grilling:
   - Explicit recommendation: `➡️ **Yes**, adopt <X> / standardize on <X>.`
 
 ### 2. Mandatory Ticket Comment Logging
+- **Thread Attribution**: The comment MUST begin with the active thread ID or link at the very top (e.g. `**Thread**: <threadId>`).
 - **Log Concluded Rounds Only**: Post a comment to the Kaneo ticket using the schema below exclusively when a round of proposals concludes (upon user decision, pushback, or approval).
 - **Concise Proposal Bullets**: Each proposal must be a single declarative sentence stating the proposed architecture or standard.
 - **Structured Response Synthesis**: `Response` is a section header; synthesize outcomes under its three subheaders (`Conclusions`, `Pushbacks`, `Explanation Requests`).
@@ -51,6 +45,8 @@ When resolving a decision ticket via grilling:
 
 ### Ticket Round Comment Schema
 ```markdown
+**Thread**: <threadId>
+
 ### Grilling Round: <X> - <Topic/Focus>
 
 #### Proposals
