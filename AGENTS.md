@@ -79,7 +79,7 @@ When all questions on a grilling ticket are settled and approved by the user:
    - Verify working tree is 100% clean.
 
 ## Staged Implementation Protocol (`/implement`)
-When a child agent is invoked on a ticket (e.g. `RGX-10`):
+When a child agent is invoked on a ticket (e.g. `RGX-<id>`):
 1. **Scope**: Confine work strictly to the assigned ticket.
 2. **Branching**: Create and switch to a dedicated branch: `feat/RGX-<id>-<slug>`.
 3. **Claim & Initialize**:

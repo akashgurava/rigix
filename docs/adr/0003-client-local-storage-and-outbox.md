@@ -5,7 +5,7 @@ Rigix client targets (`android`, `apple`, `flutter`, `web`, and `tauri`) require
 1. **Offline Read Fallback (`read_cache`)**: Mirroring server responses so users are not presented with empty screens when disconnected.
 2. **Offline FIFO Mutation Queue (`mutation_outbox`)**: Reliably buffering user actions while disconnected and dispatching them sequentially upon network restoration without client-side optimistic UI drift.
 
-Early exploratory discussions considered complex client-side caching interceptors and Stale-While-Revalidate (SWR) revalidation layers. However, analysis revealed that:
+Evaluating client-side caching interceptors and Stale-While-Revalidate (SWR) revalidation layers against project constraints revealed that:
 1. Complex client-side caching interceptors violate the **Single Source of Truth (SSOT)** principle by intercepting server truth and creating duplicate, out-of-sync state machines on client devices.
 2. High-level ORMs (e.g. Apple SwiftData, Dart Isar) impose invasive annotations (`@Model`, `@collection`) that severely conflict with official OpenAPI code generators (`swift-openapi-generator`, `openapi-generator-cli`).
 3. Shredding OpenAPI responses into relational domain tables creates massive friction: any backend schema change in `utoipa` would force client-side SQLite migrations and manual DTO-to-entity mappers.
@@ -14,7 +14,7 @@ Early exploratory discussions considered complex client-side caching interceptor
 1. **Authoritative SSOT & Transparent UI**:
    - When online, client UI targets fetch directly from the server. The UI remains completely transparent and avoids complex client-side caching interceptors.
    - Successful server responses are copied to local storage strictly as an **offline fallback**.
-   - Advanced UI interceptor/caching optimizations are deferred to backlog ticket `RGX-14`.
+   - Advanced UI interceptor/caching optimizations (such as SWR revalidation) are deferred to future offline optimization milestones.
 2. **Concrete Storage Engines**:
    - **Android**: Android Jetpack Room with SQLite (`androidx.room`).
    - **Apple (iOS/macOS)**: GRDB.swift with SQLite.

@@ -20,7 +20,7 @@
 - **Template Scaffolding & Docs**: Uses Copier (`{{ project_name }}` substitutions and conditional UI directory generation) with Jinja-commented meta-context headers in `GLOSSARY.md.jinja` and `AGENTS.md.jinja` that strip template-only context in downstream repositories.
 
 ## 4. Unresolved Questions & Open Items (The Fog)
-- **Finalizing AGENTS.md & Hard Lints**: Stripping anyhow allowances from vendored BeautifulRust skills (`rust-best-practices`, `rust-review`) and finalizing `.clippy.toml` / `[lints]` rules to enforce zero-`unwrap()` and strict encapsulation.
+- **Hard Lints & Static Analysis**: Finalizing `.clippy.toml` and workspace `[lints]` rules to enforce zero-`unwrap()` and strict encapsulation.
 - **Concrete `copier.yml` & Scaffolding Files**: Writing the `copier.yml` prompt definitions alongside the actual starter code for `server/`, the five `ui/*` MVI/cache/outbox skeletons, `Dockerfile`, and `docker-compose.yml`.
 
 ## 5. Explicitly Out of Scope for v1

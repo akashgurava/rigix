@@ -50,7 +50,7 @@ Rigix provides a server-authoritative PostgreSQL 18 storage engine managed via a
 
 ## Out of Scope
 
-- Runtime dynamic switching between SQLite, DuckDB, and PostgreSQL (dropped per ADR-0001).
+- Multi-database abstraction layers or dynamic runtime database switching.
 - Client-side storage authority or offline conflict resolution (PostgreSQL is the sole SSOT).
 - Third-party authentication integrations (OIDC, LDAP, OAuth2).
 - Multi-tenant database partitioning or multi-region replication.

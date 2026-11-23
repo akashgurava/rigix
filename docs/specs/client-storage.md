@@ -57,7 +57,7 @@ Rigix implements a decoupled, presentation-only local persistence architecture. 
 - Optimistic UI updates while offline (UI state strictly mirrors server truth).
 - Client-side distributed conflict resolution or CRDT syncing.
 - Full-database encryption for non-sensitive cached analytical records.
-- Stale-While-Revalidate (SWR) revalidation interceptors (deferred to backlog ticket `RGX-14`).
+- Stale-While-Revalidate (SWR) revalidation interceptors (deferred to future offline optimization milestones).
 
 ## Further Notes
 
