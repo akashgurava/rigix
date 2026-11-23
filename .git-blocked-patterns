@@ -5,7 +5,6 @@ git[[:space:]]+log
 git[[:space:]]+show
 git[[:space:]]+blame
 git[[:space:]]+reflog
-git[[:space:]]+diff
 git[[:space:]]+rev-list
 git[[:space:]]+whatchanged
 git[[:space:]]+push
