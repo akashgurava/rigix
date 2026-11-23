@@ -15,7 +15,7 @@ Rigix originally considered supporting runtime switching across embedded SQLite,
 4. **Asynchronous Materialized View Refreshes**: Background workers handle concurrent materialized view refreshes (`REFRESH MATERIALIZED VIEW CONCURRENTLY`) to keep dashboard read latencies in the sub-millisecond range.
 
 ## Consequences
-- The Rust server executes 100% async-native network I/O with modern PostgreSQL 18 Asynchronous I/O (AIO) and index skip scans.
+- The Rust server executes 100% async-native network I/O via Tokio and SQLx, while PostgreSQL 18 handles non-blocking disk reads via its internal Asynchronous I/O (AIO) engine and optimizes composite queries via index skip scans.
 - Developers get compile-time SQL safety without ORM impedance mismatch.
 - Template plumbing in `auth` is cleanly decoupled from downstream domain models in `public`.
 - Pure standalone execution without a database container is dropped; self-hosting requires running `postgres:18-alpine` (standardized in `docker-compose.yml`).

@@ -4,6 +4,8 @@ Rigix is a reusable Copier project template for bootstrapping self-hosted, multi
 
 ## Language
 
+### Architecture & Storage Pipeline
+
 **Single Source of Truth (SSOT)**:
 The authoritative PostgreSQL database and backend server runtime that owns all data schemas, validation, persistence, and state transitions.
 _Avoid_: Client-side store, distributed truth, offline authority
@@ -32,16 +34,20 @@ _Avoid_: Reporting database, data warehouse
 The asynchronous background task in the server that refreshes gold analytical views concurrently without blocking client read requests.
 _Avoid_: On-demand calculation, cron script
 
-**Read-Through Cache**:
-The client-side local database store that strictly mirrors server responses for immediate presentation rendering.
-_Avoid_: Client database, offline write store
+### Client Persistence & State
+
+**Offline Response Mirror (`read_cache`)**:
+The client-side local database store that mirrors server responses as an unparsed raw JSON fallback for offline presentation rendering.
+_Avoid_: Client database, offline write store, read-through cache
 
 **Mutation Queue (FIFO Outbox)**:
 The persistent client-side FIFO queue that buffers outgoing user actions while offline, dispatching them to the server upon reconnection without optimistic UI updates.
 _Avoid_: Background sync, optimistic mutations
 
+### Presentation Shells
+
 **Presentation Shell (`ui/*`)**:
-A decoupled client application target that contains zero business logic, domain validation, or database authority, rendering exclusively from the local Read-Through Cache and dispatching user actions to the Mutation Queue.
+A decoupled client application target that contains zero business logic, domain validation, or database authority, fetching directly from the server when online, rendering from the local Offline Response Mirror when disconnected, and dispatching user actions to the Mutation Queue.
 _Avoid_: Smart client, fat client
 
 **Embedded Web Client (`ui/web`)**:
@@ -49,5 +55,5 @@ The static Client-Side Rendered (CSR) Solid 2.0 application compiled to static H
 _Avoid_: SSR web app, dynamic web server
 
 **Desktop Shell (`ui/tauri`)**:
-The native desktop wrapper that packages the local embedded web client bundle and connects to the backend API via a runtime-configurable URL while supporting offline-first boot.
+The native desktop wrapper that packages the local embedded web client bundle (`rigix/ui/web/dist`) and connects to the backend API via a runtime-configurable URL while supporting offline-first boot.
 _Avoid_: Native desktop UI, remote-URL webview

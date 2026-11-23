@@ -13,11 +13,11 @@ Evaluation of the frontend landscape against Rigix's principles (compile-time ri
 3. **Hardware-Accelerated Visualization Engine**: Standardize on **Apache ECharts** (HTML5 Canvas / WebGL) fronted by Rigix-owned declarative, strictly-typed JSX components (`<SplineChart />`, `<BarChart />`, `<AreaChart />`) in `ui/web/src/components/charts/`. This enables 60fps fluid scrubbing, panning, and brushing over tens of thousands of data points without DOM thrashing.
 4. **Data Grid & Offline State**:
    - Standardize on **TanStack Table for Solid** (`@tanstack/solid-table`) for compile-time verified tabular data grids.
-   - Use **IndexedDB** for the local read-through response cache and the persistent FIFO mutation queue.
+   - Use **IndexedDB** for the local offline response cache (`read_cache`) and the persistent FIFO mutation queue.
 5. **Unified Static Build & Tauri Packaging**:
    - `ui/web` produces a single static SPA build output (`ui/web/dist`).
    - The compiled Axum server binary embeds these exact static files (via `rust-embed` or `include_dir`) for browser delivery.
-   - Tauri 2.0 bundles this exact `dist/` directory locally (`frontendDist: "../ui/web/dist"`), ensuring the desktop app boots instantly and inspects local IndexedDB cached state even when disconnected from the server.
+   - Tauri 2.0 bundles this exact `dist/` directory locally from `ui/tauri/src-tauri` (`frontendDist: "../../web/dist"`), ensuring the desktop app boots instantly and inspects local IndexedDB cached state even when disconnected from the server.
 6. **Compile-Time Contract Rigidity**: Derive all TypeScript interfaces directly from the backend's `openapi.json` via `openapi-typescript`, enforcing strict compiler flags (`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`).
 
 ## Consequences

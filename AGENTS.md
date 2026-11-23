@@ -1,8 +1,18 @@
 # Agent Operating Guidelines
 
+## Agent skills
+
+### Issue tracker
+Kaneo MCP protocol for issue and frontier task management. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+Standard 5-role triage vocabulary mapped to Kaneo status and tags. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+Single-context repository layout (`GLOSSARY.md` and `docs/adr/`). See `docs/agents/domain.md`.
+
 ## Codebase Scope
 - **Greenfield**: Base all implementations strictly on the active specification and the current working directory tree.
-- **Search**: In-tree search is conducted using `git grep` or file-read tools.
 - **Source Control**: All git lifecycle operations (branching, commits, pushes) are user-managed unless following the authorized Staged Implementation Protocol below.
 
 ## Git Commits (When Authorized)
@@ -14,30 +24,30 @@
 - **Domain Language**: Settle domain vocabulary in `GLOSSARY.md` and hard architectural choices in `docs/adr/`.
 
 ## Task Tracking & Kaneo Protocol
-- **Privacy & Dynamic Discovery**: Never hardcode personal identifiers, emails, names, or tokens in git. Discover identity and workspace dynamically via MCP (`whoami`, `list_workspaces`, `list_projects`).
+- **Privacy & Dynamic Discovery**: Discover identity and workspace dynamically via MCP (`whoami`, `list_workspaces`, `list_projects`). Confine git commits strictly to repository assets.
 - **Frontier Query**: Find tickets where status is `to-do` and all upstream blocking dependencies are satisfied (`done`).
-- **Mandatory Task Claiming & Assignment**: Whenever picking up ANY task (grilling, research, prototype, task, or implementation), the worker MUST immediately claim it before doing any work:
+- **Mandatory Task Claiming & Assignment**: Whenever picking up ANY task (grilling, research, prototype, task, or implementation), claim it immediately before doing any work:
   1. Discover current user ID dynamically via `whoami`.
   2. Assign the ticket to self via `update_task_assignee` (`userId: <id>`).
   3. Move ticket status to `in-progress` via `update_task_status`.
-  *An unassigned open task is strictly considered unclaimed; assigning it prevents parallel workers from colliding on the same ticket.*
+  *Claiming open tasks ensures parallel workers never collide on the same ticket.*
 
 ## Grilling Protocol (`wayfinder:grilling`)
 When resolving a decision ticket via grilling:
 
 ### 1. In-Chat Grilling Standards
-- **Real Engineering Dilemmas Only**: Pose questions solely on non-obvious architectural choices where both options have real trade-offs. Never grill the user on common sense, baseline security hygiene (e.g. Keychain vs plain text), or table-stakes standards.
-- **Natural Engineering Dialogue**: Speak in clear architectural prose without robotic meta-labels. Do NOT output literal `*1-line summary*:` or `*Options*: Option A / Option B` labels in chat.
+- **Real Engineering Dilemmas Only**: Pose questions solely on non-obvious architectural choices where both options have real trade-offs. Skip common sense, baseline security hygiene (e.g. Keychain vs plain text), or table-stakes standards.
+- **Natural Engineering Dialogue**: Speak in clear architectural prose, framing each inquiry around the core decision dilemma and its direct trade-offs.
 - **Proven Question Layout**:
   - `❓ **Q<number>** - **<Topic Title>**: <Context, rationale, and trade-off comparison in natural prose>`
   - Direct inquiry: `Should Rigix standardize on <X> because of <Y>?`
   - Explicit recommendation: `➡️ **Yes**, adopt <X> / standardize on <X>.`
 
 ### 2. Mandatory Ticket Comment Logging
-- **Log Concluded Rounds Only**: Post a comment to the Kaneo ticket using the schema below **only** when a round of proposals concludes (when the user decides, pushes back, or approves). **Never** log comments for intermediate conversational clarifications (e.g. "where does X live?", "can you explain Y?").
-- **Concise Proposal Bullets**: Each proposal must be a clean, single-sentence statement summarizing the proposed architecture/standard without stuffing `Options: Option A (...), Option B (...)` into the comment.
-- **No Raw Quote Dumps**: `Response` is a section header, not a quote block; synthesize outcomes under its three subheaders (`Conclusions`, `Pushbacks`, `Explanation Requests`).
-- **No Standalone Summary Comments**: Do not post an extra "Resolution Summary" comment when finished; the ticket description and the final round comment capture the settled architecture.
+- **Log Concluded Rounds Only**: Post a comment to the Kaneo ticket using the schema below exclusively when a round of proposals concludes (upon user decision, pushback, or approval).
+- **Concise Proposal Bullets**: Each proposal must be a single declarative sentence stating the proposed architecture or standard.
+- **Structured Response Synthesis**: `Response` is a section header; synthesize outcomes under its three subheaders (`Conclusions`, `Pushbacks`, `Explanation Requests`).
+- **Single Source of Truth**: The ticket description and the final round comment serve as the sole record of the settled architecture.
 
 ### Ticket Round Comment Schema
 ```markdown
@@ -59,9 +69,22 @@ When resolving a decision ticket via grilling:
 - <What the user asked to investigate, compare, or clarify for the next round>
 ```
 
+### 3. Concluding a Grilling Session & Commit Protocol
+When all questions on a grilling ticket are settled and approved by the user:
+1. **Produce Deliverables**: Ensure the technical specification (`docs/specs/<topic>.md`), Architecture Decision Record (`docs/adr/000X-<topic>.md`), and any domain terms in `GLOSSARY.md` are authored.
+2. **Atomic Git Commit on `main`**:
+   - Foundational architecture/spec tickets commit directly to `main` (no feature branch needed for pure docs).
+   - Commit message summary line MUST be strictly less than 70 characters:
+     `docs(RGX-<id>): specify <topic> & record ADR (ADR-000X)`
+3. **Update Kaneo Ticket & Map**:
+   - Update the ticket description with the Decision Tree, Final Architecture Rationale, and Artifact References.
+   - Update the Kaneo Map task (`Rigix Map`) by appending the closed ticket link and 1-line gist under `## Decisions so far`.
+   - Transition ticket status to `done` via `update_task_status`.
+   - Verify working tree is 100% clean.
+
 ## Staged Implementation Protocol (`/implement`)
 When a child agent is invoked on a ticket (e.g. `RGX-10`):
-1. **Scope**: Exactly one ticket per child thread. Never expand scope to sibling tickets.
+1. **Scope**: Confine work strictly to the assigned ticket.
 2. **Branching**: Create and switch to a dedicated branch: `feat/RGX-<id>-<slug>`.
 3. **Claim & Initialize**:
    - Move ticket status to `in-progress` in Kaneo.
@@ -86,4 +109,4 @@ When a child agent is invoked on a ticket (e.g. `RGX-10`):
 Before declaring a task done:
 1. All newly introduced behavior has corresponding automated tests.
 2. The project's type checker and test suite pass with zero errors.
-3. No unstaged temporary files or scratch artifacts remain in the tree.
+3. The git working tree is completely clean with all deliverables committed.
