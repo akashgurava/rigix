@@ -13,10 +13,16 @@ Single-context repository layout (`GLOSSARY.md` and `docs/adr/`). See `docs/agen
 
 ## Codebase Scope
 - **Greenfield**: Base all implementations strictly on the active specification and the current working directory tree.
-- **Source Control**: All git lifecycle operations (branching, commits, pushes) are user-managed unless following the authorized Staged Implementation Protocol below.
+- **Task Authority**: Feature requirements, acceptance criteria, and task history reside in the Kaneo issue tracker.
+
+## Source Control Boundary
+- **Git Command Policy**: All `git` commands are forbidden by default.
+  - Allowed autonomously: `git grep` (code search only).
+  - Allowed on explicit user instruction: `git add` and `git commit`.
+  - All other git operations (including `status`, `diff`, `log`, `branch`, `push`) remain strictly off-limits.
 
 ## Working Tree & Commits (When Authorized)
-- **Working Tree**: Keep all edits directly in the working tree. Inspect status with `git status -s`.
+- **Working Tree**: Keep all edits directly in the working tree.
 - **Atomic Commits**: When explicitly requested to commit, stage and commit target files in a single step:
   `git add <files> && git commit -m "<summary>"` (< 70 chars).
 
@@ -25,58 +31,6 @@ Single-context repository layout (`GLOSSARY.md` and `docs/adr/`). See `docs/agen
 - **Deep Modules**: Expose simple interfaces that hide rich, robust implementation details.
 - **Domain Language**: Settle domain vocabulary in `GLOSSARY.md` and hard architectural choices in `docs/adr/`.
 
-## Grilling Protocol (`wayfinder:grilling`)
-When resolving a decision ticket via grilling:
-
-### 1. In-Chat Grilling Standards
-- **Real Engineering Dilemmas Only**: Pose questions solely on non-obvious architectural choices where both options have real trade-offs. Skip common sense, baseline security hygiene (e.g. Keychain vs plain text), or table-stakes standards.
-- **Natural Engineering Dialogue**: Speak in clear architectural prose, framing each inquiry around the core decision dilemma and its direct trade-offs.
-- **Proven Question Layout**:
-  - `❓ **Q<number>** - **<Topic Title>**: <Context, rationale, and trade-off comparison in natural prose>`
-  - Direct inquiry: `Should Rigix standardize on <X> because of <Y>?`
-  - Explicit recommendation: `➡️ **Yes**, adopt <X> / standardize on <X>.`
-
-### 2. Mandatory Ticket Comment Logging
-- **Thread Attribution**: The comment MUST begin with the active thread ID or link at the very top (e.g. `**Thread**: <threadId>`).
-- **Log Concluded Rounds Only**: Post a comment to the Kaneo ticket using the schema below exclusively when a round of proposals concludes (upon user decision, pushback, or approval).
-- **Concise Proposal Bullets**: Each proposal must be a single declarative sentence stating the proposed architecture or standard.
-- **Structured Response Synthesis**: `Response` is a section header; synthesize outcomes under its three subheaders (`Conclusions`, `Pushbacks`, `Explanation Requests`).
-- **Single Source of Truth**: The ticket description and the final round comment serve as the sole record of the settled architecture.
-
-### Ticket Round Comment Schema
-```markdown
-**Thread**: <threadId>
-
-### Grilling Round: <X> - <Topic/Focus>
-
-#### Proposals
-1. **<Proposal 1 Title>**: <One clear sentence summarizing the proposed architecture/standard>.
-2. **<Proposal 2 Title>**: <One clear sentence summarizing the proposed architecture/standard>.
-
-#### Response
-
-##### Conclusions
-- <Locked decisions and settled architectural choices>
-
-##### Pushbacks
-- <Premises or assumptions the user corrected or rejected, and why>
-
-##### Explanation Requests
-- <What the user asked to investigate, compare, or clarify for the next round>
-```
-
-### 3. Concluding a Grilling Session & Commit Protocol
-When all questions on a grilling ticket are settled and approved by the user:
-1. **Produce Deliverables**: Ensure the technical specification (`docs/specs/<topic>.md`), Architecture Decision Record (`docs/adr/000X-<topic>.md`), and any domain terms in `GLOSSARY.md` are authored.
-2. **Atomic Git Commit on `main`**:
-   - Foundational architecture/spec tickets commit directly to `main` (no feature branch needed for pure docs).
-   - Commit message summary line MUST be strictly less than 70 characters:
-     `docs(RGX-<id>): specify <topic> & record ADR (ADR-000X)`
-3. **Update Kaneo Ticket & Map**:
-   - Update the ticket description with the Decision Tree, Final Architecture Rationale, and Artifact References.
-   - Update the Kaneo Map task (`Rigix Map`) by appending the closed ticket link and 1-line gist under `## Decisions so far`.
-   - Transition ticket status to `done` via `update_task_status`.
-   - Verify working tree is 100% clean.
 
 ## Staged Implementation Protocol (`/implement`)
 When a child agent is invoked on a ticket (e.g. `RGX-<id>`):

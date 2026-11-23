@@ -61,4 +61,5 @@ Rigix implements a decoupled, presentation-only local persistence architecture. 
 
 ## Further Notes
 
-- Implements the architectural decisions recorded in `docs/adr/0003-client-local-storage-and-outbox.md`.
+- Implements the architectural decisions recorded in `docs/adr/0003-client-local-storage-and-outbox.md` and `docs/adr/0004-offline-outbox-and-cache-sync-contract.md`.
+- Operational synchronization details, retry backoff algorithms, and error recovery contracts are detailed in `docs/specs/outbox-sync.md`.

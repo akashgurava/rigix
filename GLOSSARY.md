@@ -44,6 +44,18 @@ _Avoid_: Client database, offline write store, read-through cache
 The persistent client-side FIFO queue that buffers outgoing user actions while offline, dispatching them to the server upon reconnection without optimistic UI updates.
 _Avoid_: Background sync, optimistic mutations
 
+**Head-of-Line Blocking**:
+The outbox safety mechanism that halts mutation queue processing immediately upon encountering an unrecoverable client error (`FAILED_FATAL`) to preserve causal dependency ordering across queued mutations.
+_Avoid_: Best-effort drain, drop-and-continue, error skipping
+
+**Queue Quiescence**:
+The state reached when the client outbox has drained to zero pending items or halted in an error/paused state, triggering a single consolidated re-fetch of active screen queries.
+_Avoid_: Per-mutation refresh, incremental UI sync
+
+**Outbox Lock**:
+The concurrency control mechanism (Web Locks API on Web/Tauri, mutex/actor on mobile) that guarantees a single execution worker drains the persistent outbox across multiple tabs or windows.
+_Avoid_: Concurrent dispatch, multi-worker draining
+
 ### Presentation Shells
 
 **Presentation Shell (`ui/*`)**:
