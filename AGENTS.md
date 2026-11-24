@@ -11,6 +11,9 @@ Standard 5-role triage vocabulary mapped to Kaneo status and tags. See `docs/age
 ### Domain docs
 Single-context repository layout (`GLOSSARY.md` and `docs/adr/`). See `docs/agents/domain.md`.
 
+### Presentation Shell Targets
+Target-specific architecture, persistence, and state guidelines: see `docs/agents/targets/`.
+
 ## Codebase Scope
 - **Greenfield**: Base all implementations strictly on the active specification and the current working directory tree.
 - **Task Authority**: Feature requirements, acceptance criteria, and task history reside in the Kaneo issue tracker.

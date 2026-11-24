@@ -69,3 +69,13 @@ _Avoid_: SSR web app, dynamic web server
 **Desktop Shell (`ui/tauri`)**:
 The native desktop wrapper that packages the local embedded web client bundle (`rigix/ui/web/dist`) and connects to the backend API via a runtime-configurable URL while supporting offline-first boot.
 _Avoid_: Native desktop UI, remote-URL webview
+
+### Template Architecture & Scaffolding
+
+**Template Profile**:
+A predefined bundle of presentation shell targets (`default`, `minimal`, `full`, or `custom`) selected during Copier instantiation to determine which client platforms are generated.
+_Avoid_: Build flavor, deployment configuration
+
+**Target Directory Exclusion**:
+The dynamic suppression of presentation shell directories (`ui/<target>/**`) and corresponding agent documentation (`docs/agents/targets/<target>.md`) in `copier.yml`'s `_exclude` list based on active template profile flags.
+_Avoid_: Post-generation deletion, file purging
