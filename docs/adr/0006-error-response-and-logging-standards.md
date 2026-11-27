@@ -40,6 +40,10 @@ Rigix serves a compiled Rust/Axum backend (`server/`) consumed by multiple decou
 - `tracing-subscriber` is configured with `EnvFilter` (`RUST_LOG`), defaulting to `pretty` format in debug builds and `json` format in release/production builds (overridable via `LOG_FORMAT=json|pretty`).
 - `tower-http` middleware generates or propagates `x-request-id` on every HTTP request, attaches it to the active `tracing` span, and returns it in the `x-request-id` response header.
 
+### 4. Rust Documentation Standards
+- Every module in `server/src/` must begin with a concise `//!` module-level docstring describing its responsibility.
+- Every public and crate-internal (`pub` / `pub(crate)`) function, struct, enum, and type alias must have a concise `///` docstring.
+
 ## Consequences
 - **Positive**: Consistent client error handling across all Presentation Shells; zero silent error swallowing; instant `git grep` traceability from error code/origin to source line; AI-ready diagnostics.
 - **Negative**: Requires discipline to define specific `AppError` variants for new failure modes rather than collapsing them into generic catch-alls.

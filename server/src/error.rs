@@ -1,3 +1,5 @@
+//! Granular server error types and single-point HTTP error response conversion.
+
 use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
@@ -8,14 +10,17 @@ use thiserror::Error;
 
 use crate::app::REQUEST_ID;
 
+/// Granular application errors with searchable codes and call-site origin tracking.
 #[derive(Debug, Error)]
 pub(crate) enum AppError {
+    /// Failed to compute duration since `UNIX_EPOCH`.
     #[error("System time error: {source}")]
     SystemTimeError {
         #[source]
         source: std::time::SystemTimeError,
         origin: &'static str,
     },
+    /// Millisecond timestamp exceeded `i64::MAX`.
     #[error("Timestamp overflow: {source}")]
     TimestampOverflow {
         #[source]

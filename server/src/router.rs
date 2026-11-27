@@ -1,3 +1,5 @@
+//! HTTP router assembly and request-tracing / correlation middleware.
+
 use axum::{
     body::Body,
     http::Request,
@@ -14,6 +16,7 @@ use tower_http::{
 use crate::app::{REQUEST_ID, X_REQUEST_ID};
 use crate::handlers::health::health_handler;
 
+/// Binds the incoming `x-request-id` header into task-local storage for downstream error logging.
 async fn bind_request_id(request: Request<Body>, next: Next) -> Response {
     let request_id = request
         .headers()
@@ -25,6 +28,7 @@ async fn bind_request_id(request: Request<Body>, next: Next) -> Response {
     REQUEST_ID.scope(request_id, next.run(request)).await
 }
 
+/// Builds the Axum [`Router`] with all routes and observability middleware layers.
 pub fn app() -> Router {
     Router::new()
         .route("/api/health", get(health_handler))

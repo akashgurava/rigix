@@ -1,3 +1,5 @@
+//! Binary entrypoint for the Rigix server.
+
 use std::net::SocketAddr;
 
 #[tokio::main]
