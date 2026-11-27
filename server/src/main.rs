@@ -1,16 +1,18 @@
 use std::net::SocketAddr;
-use tracing::info;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt::init();
+    let default_filter = "info,tower_http=debug";
+    let log_format = std::env::var("LOG_FORMAT").unwrap_or_else(|_| {
+        if cfg!(debug_assertions) {
+            "pretty".to_string()
+        } else {
+            "json".to_string()
+        }
+    });
 
-    let app = server::app();
+    server::init_tracing(default_filter, &log_format);
+
     let addr = SocketAddr::from(([0, 0, 0, 0], 8977));
-    info!("Starting server on {}", addr);
-
-    let listener = tokio::net::TcpListener::bind(addr).await?;
-    axum::serve(listener, app).await?;
-
-    Ok(())
+    server::run(addr).await
 }

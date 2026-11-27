@@ -79,3 +79,17 @@ _Avoid_: Build flavor, deployment configuration
 **Target Directory Exclusion**:
 The dynamic suppression of presentation shell directories (`ui/<target>/**`) and corresponding agent documentation (`docs/agents/targets/<target>.md`) in `copier.yml`'s `_exclude` list based on active template profile flags.
 _Avoid_: Post-generation deletion, file purging
+
+### Error Handling & Observability
+
+**Server Response (`ServerResponse`)**:
+The unified outcome of a server endpoint, yielding either a raw typed success payload (`ServerSuccess`) or a structured, coded error (`AppError`).
+_Avoid_: Untyped JSON, inconsistent error envelopes
+
+**App Error (`AppError`)**:
+A granular, machine-readable server error with a unique searchable code, call-site origin, and human-safe message, logged at a single response boundary.
+_Avoid_: Generic catch-all errors, silent error swallowing
+
+**Request Correlation ID (`request_id`)**:
+A unique identifier assigned to every incoming HTTP request, propagated through server logs and returned in response headers and error payloads.
+_Avoid_: Uncorrelated logs, missing trace context
